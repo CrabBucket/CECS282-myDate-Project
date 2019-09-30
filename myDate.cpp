@@ -20,7 +20,7 @@ void Julian2Greg(int JD, int & month, int & day, int & year){
     j = 80*l/2447;
     k = l-2447*j/80;
     l = j/11;
-    j = J+2-12*l;
+    j = j+2-12*l;
     i = 100 * (n-49) + i + l;
     
     
@@ -28,120 +28,136 @@ void Julian2Greg(int JD, int & month, int & day, int & year){
     month = j;
     day = k;
 }
-namespace Date{
-    class myDate{
-        myDate::myDate() : month(5),day(11),year(1959) {}
-        myDate::myDate(int M,int D,int Y) : month(M),day(Y),year(D) {
-            if(year<1801||year>2099){
-                // month = 5;
-                // day = 10;
-                // year = 1959;
-                myDate();
-            }else if(day<1||day>31){
-                myDate();
-            }else if(month<1||month>12){
-                myDate();
-            }
-        }
-        
-        myDate::void display(){
-            cout << "(";
-            switch(month){
-                case 1:
-                    cout << "January";
-                    break;
-                case 2:
-                    cout << "Febuary";
-                    break;
-                case 3:
-                    cout << "March";
-                    break;
-                case 4:
-                    cout << "April";
-                    break;
-                case 5:
-                    cout << "May";
-                    break;
-                case 6:
-                    cout << "June";
-                    break;
-                case 7:
-                    cout << "July";
-                    break;
-                case 8:
-                    cout << "August";
-                    break;
-                case 9:
-                    cout << "September";
-                    break;
-                case 10:
-                    cout << "October";
-                    break;
-                case 11:
-                    cout << "November";
-                    break;
-                case 12:
-                    cout << "December";
-                    break;
-                
-            }
-            cout << " " << to_string(day) << ", " << to_string(year) << ")"
-        }
-        myDate::void increaseDate(int N){
-            int julian = Greg2Julian(month,day,year);
-            julian += N;
-            Julian2Greg(julian,month,day,year);
 
-            
-        }
-        myDate::void decreaseDate(int N){
-            int julian = Greg2Julian(month,day,year);
-            julian -= N;
-            Julian2Greg(julian,month,day,year);
 
-            
-        }
-        myDate::int daysBetween(myDate D){
-            return Greg2Julian(D.getMonth(),D.getDay(),D.getYear()) - Greg2Julian(day,month,year);
-        }
-        myDate::int getMonth(){
-            return month;
-        }
-        myDate::int getDay(){
-            return day;
-        }
-        myDate::int getYear(){
-            return year;
-        }
-        myDate::int dayOfYear(){
-            return Greg2Julian(day,month,year) - Greg2Julian(1,1,year);
-        }
-        
-        myDate::string dayName(){
-            // Kinda tricky we just get the offset of today and the date we are inspecting
-            // Then we get that mod 7 and then set the day according to that.
-            // It's easy to see how it works for values around today, ie yesterday will be
-            // 9/29/2019 and our offset will = -1.
-            // -1 mod 7 = 6 which is sunday in our switch so that works.
-            // and the other days around are even easier then the previous example.
-            int offset = (Greg2Julian(9,30,2019) - Greg2Julian(day,month,year));
-            switch(offset % 7){
-                case 0:
-                    return "Monday";
-                case 1:
-                    return "Tuesday";
-                case 2:
-                    return "Wednsesday";
-                case 3:
-                    return "Thursday";
-                case 4:
-                    return "Friday";
-                case 5:
-                    return "Saturday";
-                case 6:
-                    return "Sunday";
-            }
-
-        }
+myDate::myDate() {
+	year = 1959;
+	month = 5;
+	day = 10;
+}
+myDate::myDate(int M,int D,int Y): day(D),month(M),year(Y){
+    if(year<1801||year>2099){
+        // month = 5;
+        // day = 10;
+        // year = 1959;
+        myDate();
+    }else if(day<1||day>31){
+        myDate();
+    }else if(month<1||month>12){
+        myDate();
     }
 }
+        
+void myDate::display(){
+    cout << "(";
+    switch(month){
+        case 1:
+            cout << "January";
+            break;
+        case 2:
+            cout << "Febuary";
+            break;
+        case 3:
+            cout << "March";
+            break;
+        case 4:
+            cout << "April";
+            break;
+        case 5:
+            cout << "May";
+            break;
+        case 6:
+            cout << "June";
+            break;
+        case 7:
+            cout << "July";
+            break;
+        case 8:
+            cout << "August";
+            break;
+        case 9:
+            cout << "September";
+            break;
+        case 10:
+            cout << "October";
+            break;
+        case 11:
+            cout << "November";
+            break;
+        case 12:
+            cout << "December";
+            break;
+                
+    }
+	cout << " " << to_string(day) << ", " << to_string(year) << ")";
+}
+void myDate::increaseDate(int N){
+    int julian = Greg2Julian(month,day,year);
+    julian += N;
+    Julian2Greg(julian,month,day,year);
+
+            
+}
+void myDate::decreaseDate(int N){
+    int julian = Greg2Julian(month,day,year);
+    julian -= N;
+    Julian2Greg(julian,month,day,year);
+
+            
+}
+int myDate::daysBetween(myDate D){
+    return Greg2Julian(D.getMonth(),D.getDay(),D.getYear()) - Greg2Julian(day,month,year);
+}
+int myDate::getMonth(){
+    return month;
+}
+int myDate::getDay(){
+    return day;
+}
+int myDate::getYear(){
+    return year;
+}
+int myDate::dayOfYear(){
+    return Greg2Julian(day,month,year) - Greg2Julian(1,1,year);
+}
+        
+string myDate::dayName(){
+    // Kinda tricky we just get the offset of today and the date we are inspecting
+    // Then we get that mod 7 and then set the day according to that.
+    // It's easy to see how it works for values around today, ie yesterday will be
+    // 9/29/2019 and our offset will = -1.
+    // -1 mod 7 = 6 which is sunday in our switch so that works.
+    // and the other days around are even easier then the previous example.
+    int offset = (Greg2Julian(9,30,2019) - Greg2Julian(day,month,year));
+    switch(offset % 7){
+        case 0:
+            return "Monday";
+				
+        case 1:
+            return "Tuesday";
+				
+        case 2:
+            return "Wednsesday";
+				
+        case 3:
+            return "Thursday";
+				
+        case 4:
+            return "Friday";
+				
+        case 5:
+            return "Saturday";
+        case 6:
+            return "Sunday";
+		default:
+			return "ERROR IN DAYNAME";
+				
+    }
+
+}
+
+
+
+
+
+

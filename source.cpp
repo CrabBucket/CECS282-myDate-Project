@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-using namespace Date;
+
 
 int main(){
     myDate today(9,30,2019);
