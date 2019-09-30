@@ -35,16 +35,26 @@ myDate::myDate() {
 	month = 5;
 	day = 10;
 }
-myDate::myDate(int M,int D,int Y): day(D),month(M),year(Y){
-    if(year<1801||year>2099){
-        // month = 5;
-        // day = 10;
-        // year = 1959;
-        myDate();
-    }else if(day<1||day>31){
-        myDate();
-    }else if(month<1||month>12){
-        myDate();
+myDate::myDate(int M,int D,int Y){
+    if(Y<1801||Y>2099){
+        
+        year = 1959;
+	    month = 5;
+	    day = 10;
+    }else if(D<1||D>31){
+        cout<<"2";
+        year = 1959;
+	    month = 5;
+	    day = 10;
+    }else if(M<1||M>12){
+        
+        year = 1959;
+	    month = 5;
+	    day = 10;
+    }else{
+        month = M;
+        day = D;
+        year = Y;
     }
 }
         
@@ -127,12 +137,16 @@ string myDate::dayName(){
     // It's easy to see how it works for values around today, ie yesterday will be
     // 9/29/2019 and our offset will = -1.
     // -1 mod 7 = 6 which is sunday in our switch so that works.
+    //We gave to get the absolute value because cpp defines their modulo operator dumbly.
     // and the other days around are even easier then the previous example.
-    int offset = (Greg2Julian(9,30,2019) - Greg2Julian(day,month,year));
-    switch(offset % 7){
+
+    int offset =  (Greg2Julian(month,day,year)-Greg2Julian(9,30,2019))%7;
+    // Good excuse to use a lambda to fix signed modulo function.  It could just be in the switch case but I had to trouble shoot it because it was my first time attemptimg a c++ lambda.
+    int fixed = [](int in){if(in>0)return (in);else{return (7+in)%7;}}(offset);
+    switch(fixed){
         case 0:
             return "Monday";
-				
+			break;
         case 1:
             return "Tuesday";
 				
