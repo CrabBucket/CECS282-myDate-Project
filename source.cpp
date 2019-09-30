@@ -6,8 +6,9 @@ using namespace std;
 
 int main(){
     myDate today(9,30,2019);
-
-    today.display();
+    myDate nextMonth(10,30,2019);
+    nextMonth.increaseDate(500);
+    cout << today.daysBetween(nextMonth);
     
     
     
