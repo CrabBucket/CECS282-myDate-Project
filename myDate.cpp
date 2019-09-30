@@ -110,7 +110,7 @@ void myDate::increaseDate(int N){
 }
 void myDate::decreaseDate(int N){
     int julian = Greg2Julian(month,day,year);
-    julian -= N;
+    julian = julian - N;
     Julian2Greg(julian,month,day,year);
 
             
@@ -128,7 +128,7 @@ int myDate::getYear(){
     return year;
 }
 int myDate::dayOfYear(){
-    return Greg2Julian(day,month,year) - Greg2Julian(1,1,year);
+    return abs(daysBetween(myDate(1,1,year))-1);
 }
         
 string myDate::dayName(){
